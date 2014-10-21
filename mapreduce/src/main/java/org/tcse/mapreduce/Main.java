@@ -17,7 +17,7 @@ import org.tcse.mapreduce.MatrixMultiply.Reduce;
  */
 public class Main {
 	public static void main(String[] args) throws Exception {
-		JobConf conf = createConf();
+		JobConf conf = createJob();
 		String fsDefaultName = conf.get("fs.default.name");
 		String pathNameOfA = fsDefaultName + "/electric-experiment/lab_bigmmult_a.txt";
 		String pathNameOfB = fsDefaultName + "/electric-experiment/lab_bigmmult_b.txt";
@@ -28,7 +28,7 @@ public class Main {
 		System.exit(0);
 	}
 
-	private static JobConf createConf() {
+	private static JobConf createJob() {
 		JobConf conf = new JobConf(MatrixMultiply.class);
 		conf.setJobName("WordCount");
 		conf.addResource("classpath:/hadoop/core-site.xml");
