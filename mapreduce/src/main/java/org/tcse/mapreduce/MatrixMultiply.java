@@ -14,23 +14,23 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
 public class MatrixMultiply {
+	private static final int MATRIX_I = 4;
+	private static final int MATRIX_J = 3;
+	private static final int MATRIX_K = 2;
 
 	public static class Map extends MapReduceBase implements
 			Mapper<LongWritable, Text, Text, Text> {
 
 		private static final String CONTROL_I = "\u0009";
-		private static final int MATRIX_I = 4;
-
-		private static final int MATRIX_K = 2;
 
 		public void map(LongWritable key, Text value,
 				OutputCollector<Text, Text> output, Reporter reporter)
 				throws IOException {
 			String pathName = ((FileSplit) reporter.getInputSplit()).getPath()
 					.toString();
-			if (pathName.contains("m_ys_lab_bigmmult_a")) {
+			if (pathName.contains("lab_bigmmult_a")) {
 				collectToOutput(output, value, true);
-			} else if (pathName.contains("m_ys_lab_bigmmult_a")) {
+			} else if (pathName.contains("lab_bigmmult_b")) {
 				collectToOutput(output, value, false);
 			} else {
 				// not my file
@@ -72,7 +72,6 @@ public class MatrixMultiply {
 
 	public static class Reduce extends MapReduceBase implements
 			Reducer<Text, Text, Text, Text> {
-		private static final int MATRIX_J = 3;
 
 		public void reduce(Text key, Iterator<Text> values,
 				OutputCollector<Text, Text> outputCollector, Reporter reporter)

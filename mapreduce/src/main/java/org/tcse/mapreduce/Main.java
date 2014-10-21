@@ -17,8 +17,9 @@ import org.tcse.mapreduce.MatrixMultiply.Reduce;
  */
 public class Main {
 	public static void main(String[] args) throws Exception {
-		String input = "hdfs://133.133.134.188:9000/user/hdfs/o_t_account";
-		String output = "hdfs://133.133.134.188:9000/user/hdfs/o_t_account/result";
+		String pathNameOfA = "hdfs://133.133.134.188:9000/electric-experiment/lab_bigmmult_a.txt";
+		String pathNameOfB = "hdfs://133.133.134.188:9000/electric-experiment/lab_bigmmult_b.txt";
+		String output = "hdfs://133.133.134.188:9000/electric-experiment/lab_bigmmult_c.txt";
 
 		JobConf conf = new JobConf(MatrixMultiply.class);
 		conf.setJobName("WordCount");
@@ -36,7 +37,7 @@ public class Main {
 		conf.setInputFormat(TextInputFormat.class);
 		conf.setOutputFormat(TextOutputFormat.class);
 
-		FileInputFormat.setInputPaths(conf, new Path(input));
+		FileInputFormat.setInputPaths(conf, new Path(pathNameOfA), new Path(pathNameOfB));
 		FileOutputFormat.setOutputPath(conf, new Path(output));
 		JobClient.runJob(conf);
 		System.exit(0);
