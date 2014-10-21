@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+	<property>
+		<name>hadoop.tmp.dir</name>
+		<value>/home/Xinsheng/hadoop/tmp</value>
+	</property>
+	<property>
+		<name>fs.default.name</name>
+		<value>hdfs://133.133.134.188:9000</value>
+	</property>
+</configuration>
