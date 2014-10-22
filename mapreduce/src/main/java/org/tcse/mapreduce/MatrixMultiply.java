@@ -21,6 +21,7 @@ public class MatrixMultiply {
 	public static class Map extends MapReduceBase implements
 			Mapper<LongWritable, Text, Text, Text> {
 
+		// Tab
 		private static final String CONTROL_I = "\u0009";
 
 		public void map(LongWritable key, Text value,
@@ -28,13 +29,12 @@ public class MatrixMultiply {
 				throws IOException {
 			String pathName = ((FileSplit) reporter.getInputSplit()).getPath()
 					.toString();
-			if (pathName.contains("lab_bigmmult_a")) {
-				collectToOutput(output, value, true);
-			} else if (pathName.contains("lab_bigmmult_b")) {
-				collectToOutput(output, value, false);
-			} else {
-				// not my file
+			if (!pathName.contains("lab_bigmmult")) {
+				//not my file
+				return;
 			}
+			collectToOutput(output, value, true);
+			collectToOutput(output, value, false);
 		}
 
 		void collectToOutput(OutputCollector<Text, Text> output, Text line,
@@ -79,6 +79,7 @@ public class MatrixMultiply {
 			int[] rowValuesOfA = initWithZero(MATRIX_J), columnValuesOfB = initWithZero(MATRIX_J);
 			while (values.hasNext()) {
 				String value = values.next().toString();
+				System.out.println("currentValue is " + value);
 				String[] valueLine = value.split("#");
 				if (value.startsWith("a#")) {
 					rowValuesOfA[Integer.parseInt(valueLine[1])] = Integer

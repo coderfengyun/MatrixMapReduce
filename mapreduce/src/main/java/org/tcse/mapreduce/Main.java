@@ -1,5 +1,7 @@
 package org.tcse.mapreduce;
 
+import java.util.Date;
+
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.FileInputFormat;
@@ -18,11 +20,10 @@ import org.tcse.mapreduce.MatrixMultiply.Reduce;
 public class Main {
 	public static void main(String[] args) throws Exception {
 		JobConf conf = createJob();
-		String fsDefaultName = conf.get("fs.default.name");
-		String pathNameOfA = fsDefaultName + "/electric-experiment/lab_bigmmult_a.txt";
-		String pathNameOfB = fsDefaultName + "/electric-experiment/lab_bigmmult_b.txt";
-		String result = fsDefaultName + "/electric-experiment/lab_bigmmult_c.txt";
-		FileInputFormat.setInputPaths(conf, new Path(pathNameOfA), new Path(pathNameOfB));
+		String fsDefaultName = "hdfs://133.133.134.188:9000";
+		String pathNameOfA = fsDefaultName + "/electric-experiment/lab_bigmmult.txt";
+		String result = fsDefaultName + "/electric-experiment/lab_bigmmult_result" + new Date().getTime() + ".txt";
+		FileInputFormat.setInputPaths(conf, new Path(pathNameOfA));
 		FileOutputFormat.setOutputPath(conf, new Path(result));
 		JobClient.runJob(conf);
 		System.exit(0);
