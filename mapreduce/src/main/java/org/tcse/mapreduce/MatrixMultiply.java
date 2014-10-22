@@ -96,6 +96,10 @@ public class MatrixMultiply {
 				}
 			}
 			Text value = multiplyAndSum(rowValuesOfA, columnValuesOfB);
+			if(value.toString().equals("0")){
+				//record the non-zero only, to construct the Sparse matrix
+				return;
+			}
 			outputCollector.collect(key, value);
 			System.out.println("collectResult : " + key.toString() + " -> "
 					+ value.toString());
