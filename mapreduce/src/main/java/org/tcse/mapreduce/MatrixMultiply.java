@@ -14,9 +14,9 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
 public class MatrixMultiply {
-	private static final int MATRIX_I = 4;
+	private static final int MATRIX_I = 3;
 	private static final int MATRIX_J = 3;
-	private static final int MATRIX_K = 2;
+	private static final int MATRIX_K = 3;
 
 	public static class Map extends MapReduceBase implements
 			Mapper<LongWritable, Text, Text, Text> {
@@ -29,8 +29,8 @@ public class MatrixMultiply {
 				throws IOException {
 			String pathName = ((FileSplit) reporter.getInputSplit()).getPath()
 					.toString();
-			if (!pathName.contains("lab_bigmmult")) {
-				//not my file
+			if (!pathName.contains(Main.SOURCE_FILE)) {
+				// not my file
 				return;
 			}
 			collectToOutput(output, value, true);
@@ -39,6 +39,7 @@ public class MatrixMultiply {
 
 		void collectToOutput(OutputCollector<Text, Text> output, Text line,
 				boolean isA) throws IOException {
+			System.out.println("line is : " + line.toString());
 			String[] values = extractValues(line);
 			if (values == null) {
 				return;
@@ -46,13 +47,17 @@ public class MatrixMultiply {
 			String rowIndex = values[0], columnIndex = values[1], elementValue = values[2];
 			if (isA) {
 				for (int k = 0; k < MATRIX_K; k++) {
-					output.collect(new Text(rowIndex + CONTROL_I + k),
-							new Text("a#" + columnIndex + "#" + elementValue));
+					String key = rowIndex + CONTROL_I + k, value = "a#"
+							+ columnIndex + "#" + elementValue;
+					output.collect(new Text(key), new Text(value));
+					System.out.println(key + " -> " + value);
 				}
 			} else {
 				for (int i = 0; i < MATRIX_I; i++) {
-					output.collect(new Text(i + CONTROL_I + columnIndex),
-							new Text("b#" + rowIndex + "#" + elementValue));
+					String key = i + CONTROL_I + columnIndex, value = "b#"
+							+ rowIndex + "#" + elementValue;
+					output.collect(new Text(key), new Text(value));
+					System.out.println(key + " -> " + value);
 				}
 			}
 		}
@@ -79,7 +84,8 @@ public class MatrixMultiply {
 			int[] rowValuesOfA = initWithZero(MATRIX_J), columnValuesOfB = initWithZero(MATRIX_J);
 			while (values.hasNext()) {
 				String value = values.next().toString();
-				System.out.println("currentValue is " + value);
+				System.out.println("currentKey is " + key
+						+ "; currentValue is " + value);
 				String[] valueLine = value.split("#");
 				if (value.startsWith("a#")) {
 					rowValuesOfA[Integer.parseInt(valueLine[1])] = Integer
@@ -89,8 +95,10 @@ public class MatrixMultiply {
 							.parseInt(valueLine[2]);
 				}
 			}
-			outputCollector.collect(key,
-					multiplyAndSum(rowValuesOfA, columnValuesOfB));
+			Text value = multiplyAndSum(rowValuesOfA, columnValuesOfB);
+			outputCollector.collect(key, value);
+			System.out.println("collectResult : " + key.toString() + " -> "
+					+ value.toString());
 		}
 
 		private Text multiplyAndSum(int[] rowValuesOfA, int[] columnValuesOfB) {
