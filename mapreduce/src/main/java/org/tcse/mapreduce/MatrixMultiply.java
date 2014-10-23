@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileSplit;
 import org.apache.hadoop.mapred.MapReduceBase;
 import org.apache.hadoop.mapred.Mapper;
 import org.apache.hadoop.mapred.OutputCollector;
@@ -22,17 +21,18 @@ public class MatrixMultiply {
 			Mapper<LongWritable, Text, Text, Text> {
 
 		// Tab
-		private static final String CONTROL_I = "\u0009";
+		private static final String TAB = "\t";
 
 		public void map(LongWritable key, Text value,
 				OutputCollector<Text, Text> output, Reporter reporter)
 				throws IOException {
-			String pathName = ((FileSplit) reporter.getInputSplit()).getPath()
-					.toString();
-			if (!pathName.contains(Main.SOURCE_FILE)) {
-				// not my file
-				return;
-			}
+			// String pathName = ((FileSplit)
+			// reporter.getInputSplit()).getPath()
+			// .toString();
+			// if (!pathName.contains(Main.SOURCE_FILE)) {
+			// // not my file
+			// return;
+			// }
 			collectToOutput(output, value, true);
 			collectToOutput(output, value, false);
 		}
@@ -42,20 +42,21 @@ public class MatrixMultiply {
 			System.out.println("line is : " + line.toString());
 			String[] values = extractValues(line);
 			if (values == null) {
+				System.out.println("values is " + values);
 				return;
 			}
 			String rowIndex = values[0], columnIndex = values[1], elementValue = values[2];
 			if (isA) {
 				for (int k = 0; k < MATRIX_K; k++) {
-					String key = rowIndex + CONTROL_I + k, value = "a#"
-							+ columnIndex + "#" + elementValue;
+					String key = rowIndex + TAB + k, value = "a#" + columnIndex
+							+ "#" + elementValue;
 					output.collect(new Text(key), new Text(value));
 					System.out.println(key + " -> " + value);
 				}
 			} else {
 				for (int i = 0; i < MATRIX_I; i++) {
-					String key = i + CONTROL_I + columnIndex, value = "b#"
-							+ rowIndex + "#" + elementValue;
+					String key = i + TAB + columnIndex, value = "b#" + rowIndex
+							+ "#" + elementValue;
 					output.collect(new Text(key), new Text(value));
 					System.out.println(key + " -> " + value);
 				}
@@ -67,7 +68,7 @@ public class MatrixMultiply {
 			if (line == null || line.isEmpty()) {
 				return null;
 			}
-			String[] values = line.split(CONTROL_I);
+			String[] values = line.split(TAB);
 			if (values.length < 3) {
 				return null;
 			}

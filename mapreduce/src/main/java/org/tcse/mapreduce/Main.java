@@ -1,5 +1,6 @@
 package org.tcse.mapreduce;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.hadoop.fs.Path;
@@ -26,11 +27,12 @@ public class Main {
 		}
 		JobConf conf = createMatrixMultiplyJob();
 		String fsDefaultName = "hdfs://133.133.134.188:9000";
-		String pathNameOfA = SOURCE_FILE;
-		String result = fsDefaultName + "/electric-experiment/result"
-				+ new Date().getTime() + ".txt";
-		FileInputFormat.setInputPaths(conf, new Path(pathNameOfA));
-		FileOutputFormat.setOutputPath(conf, new Path(result));
+		String resultPath = fsDefaultName
+				+ "/electric-experiment/result/"
+				+ new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss")
+						.format(new Date()) + ".txt";
+		FileInputFormat.setInputPaths(conf, new Path(SOURCE_FILE));
+		FileOutputFormat.setOutputPath(conf, new Path(resultPath));
 		JobClient.runJob(conf);
 		System.exit(0);
 	}
