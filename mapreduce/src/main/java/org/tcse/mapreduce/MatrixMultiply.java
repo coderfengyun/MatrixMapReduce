@@ -14,9 +14,9 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
 public class MatrixMultiply {
-	static int MATRIX_I = 3;
-	static int MATRIX_J = 3;
-	static int MATRIX_K = 3;
+	static int MATRIX_I;
+	static int MATRIX_J;
+	static int MATRIX_K;
 
 	public static class Map extends MapReduceBase implements
 			Mapper<LongWritable, Text, Text, Text> {

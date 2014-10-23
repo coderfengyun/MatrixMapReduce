@@ -116,4 +116,27 @@ public class ConvertMatrix2SparseAndEnlarge {
 		this.targetWriter.newLine();
 		return result;
 	}
+
+	public static void main(String[] args) throws IOException {
+		if (args.length == 0 || args[0].equals("-help")) {
+			System.out.println("-source_path XX");
+			System.out.println("-source_row_count XX");
+			System.out.println("-enlarge_times XX");
+			return;
+		}
+		if (!args[0].equals("-source_path")) {
+			throw new RuntimeException("args[0] != -sourcepath");
+		}
+		String sourcepath = args[1];
+		if (!args[2].equals("-source_row_count")) {
+			throw new RuntimeException("args[2] != -source_row_count");
+		}
+		int sourceRowCount = Integer.parseInt(args[3]);
+		if (!args[4].equals("-enlarge_times")) {
+			throw new RuntimeException("args[4] != -enlarge_times");
+		}
+		int enlargeTimes = Integer.parseInt(args[5]);
+		new ConvertMatrix2SparseAndEnlarge(sourcepath, sourceRowCount,
+				enlargeTimes).doConvert();
+	}
 }
