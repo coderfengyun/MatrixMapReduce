@@ -39,7 +39,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>org.tcse.mapreduce.Main</mainClass>
+							<mainClass>org.tcse.mapreduce.MatrixMultiply</mainClass>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
