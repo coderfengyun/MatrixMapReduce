@@ -14,9 +14,9 @@ import org.apache.hadoop.mapred.Reducer;
 import org.apache.hadoop.mapred.Reporter;
 
 public class MatrixMultiply {
-	private static final int MATRIX_I = 3;
-	private static final int MATRIX_J = 3;
-	private static final int MATRIX_K = 3;
+	static int MATRIX_I = 3;
+	static int MATRIX_J = 3;
+	static int MATRIX_K = 3;
 
 	public static class Map extends MapReduceBase implements
 			Mapper<LongWritable, Text, Text, Text> {
@@ -96,8 +96,8 @@ public class MatrixMultiply {
 				}
 			}
 			Text value = multiplyAndSum(rowValuesOfA, columnValuesOfB);
-			if(value.toString().equals("0")){
-				//record the non-zero only, to construct the Sparse matrix
+			if (value.toString().equals("0")) {
+				// record the non-zero only, to construct the Sparse matrix
 				return;
 			}
 			outputCollector.collect(key, value);
