@@ -162,9 +162,9 @@ public class MatrixMultiply {
 		private Text multiplyAndSum(int[] rowValuesOfA, int[] columnValuesOfB) {
 			int result = 0;
 			for (int i = 0; i < columnValuesOfB.length; i++) {
-				result += rowValuesOfA[i] * columnValuesOfB[i];
+				result = result | (rowValuesOfA[i] | columnValuesOfB[i]);
 			}
-			return new Text(Integer.toString(result != 0 ? 1 : 0));
+			return new Text(Integer.toString(result));
 		}
 
 		private int[] initWithZero(int arrayLength) {
