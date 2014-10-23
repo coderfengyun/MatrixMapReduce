@@ -21,7 +21,7 @@ public class Main {
 	static final String SOURCE_FILE = "source.txt";
 
 	public static void main(String[] args) throws Exception {
-		JobConf conf = createJob();
+		JobConf conf = createMatrixMultiplyJob();
 		String fsDefaultName = "hdfs://133.133.134.188:9000";
 		String pathNameOfA = fsDefaultName + "/electric-experiment/"+SOURCE_FILE;
 		String result = fsDefaultName + "/electric-experiment/result" + new Date().getTime() + ".txt";
@@ -31,7 +31,7 @@ public class Main {
 		System.exit(0);
 	}
 
-	private static JobConf createJob() {
+	private static JobConf createMatrixMultiplyJob() {
 		JobConf conf = new JobConf(MatrixMultiply.class);
 		conf.setJobName("MatrixMultiply");
 		conf.addResource("classpath:/hadoop/core-site.xml");
