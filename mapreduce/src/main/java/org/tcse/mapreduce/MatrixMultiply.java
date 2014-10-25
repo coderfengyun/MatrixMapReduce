@@ -68,8 +68,8 @@ public class MatrixMultiply {
 		conf.setReducerClass(Reduce.class);
 		conf.setInputFormat(TextInputFormat.class);
 		conf.setOutputFormat(TextOutputFormat.class);
-		conf.setInt("mapred.reduce.tasks", 10);
-		conf.setInt("mapred.map.tasks", 10);
+		conf.setInt("mapred.reduce.tasks", 14);
+		conf.setInt("mapred.map.tasks", 14);
 		return conf;
 	}
 
